@@ -1,9 +1,12 @@
-# to run this script in the background, use the following command:
-# nohup python cron-vqc.py &
-# to kill the process, use the following command:
-# ps -ef | grep cron-vqc.py # pid is the second column
-# kill -9 <PID>
-# where <PID> is the process ID of cron-vqc.py
+"""
+Instructions:
+- To run this script in the background: 
+    nohup python cron-vqc.py &
+- To kill the process: 
+    ps -ef | grep cron-vqc.py  # PID is the second column
+    kill -9 <PID>
+    - where <PID> is the process ID of cron-vqc.py
+"""
 
 from datetime import datetime, timedelta
 import sched
