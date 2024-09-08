@@ -9,6 +9,7 @@ import re
 from datetime import datetime, timedelta
 from static import COMBINATIONS, DURATION_REGEX, EXPECTED_KEYWORD, LOG_PATH, RESULT_PATH, TOKEN_PATH, EXCLUDE
 
+
 def list_pkl():
     file_names = []
     for root, _, files in os.walk(RESULT_PATH):
@@ -88,7 +89,8 @@ def linear_regression():
 
     # Check if denominator is zero
     if n * sum_x_squared - sum_x ** 2 == 0:
-        raise ValueError("Cannot calculate linear regression: all x values are the same")
+        raise ValueError(
+            "Cannot calculate linear regression: all x values are the same")
 
     # Y = aX + b with r as correlation coefficient
     a = (n * sum_xy - sum_x * sum_y) / (n * sum_x_squared - sum_x ** 2)
@@ -96,9 +98,11 @@ def linear_regression():
 
     # Check if denominator is zero
     if (n * sum_x_squared - sum_x ** 2) * (n * sum_y_squared - sum_y ** 2) == 0:
-        raise ValueError("Cannot calculate correlation coefficient: all x or y values are the same")
+        raise ValueError(
+            "Cannot calculate correlation coefficient: all x or y values are the same")
 
-    r = (n * sum_xy - sum_x * sum_y) / ((n * sum_x_squared - sum_x ** 2) * (n * sum_y_squared - sum_y ** 2)) ** 0.5
+    r = (n * sum_xy - sum_x * sum_y) / ((n * sum_x_squared - sum_x ** 2)
+                                        * (n * sum_y_squared - sum_y ** 2)) ** 0.5
 
     return a, b, start_date, r, len(missing)
 
@@ -126,7 +130,8 @@ def etl_duration() -> list:
     if len(normal_dates) > 0:
         last_date = normal_dates[-1]
         for i in range((datetime.strptime(last_date, "%Y-%m-%d") - datetime.strptime(start_date, "%Y-%m-%d")).days):
-            date = (datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=i)).strftime("%Y-%m-%d")
+            date = (datetime.strptime(start_date, "%Y-%m-%d") +
+                    timedelta(days=i)).strftime("%Y-%m-%d")
             if date not in done:
                 done[date] = current_count * -1
             else:
@@ -139,11 +144,13 @@ def etl_duration() -> list:
 
     return done
 
+
 def csvrize(dict_from_etl: dict) -> str:
     csv = "date,count\n"
     for key, value in dict_from_etl.items():
         csv += f"{key},{value}\n"
     return csv
+
 
 def extract_negative_count(dict_from_etl: dict) -> tuple:
     normal: dict = {}
@@ -157,9 +164,11 @@ def extract_negative_count(dict_from_etl: dict) -> tuple:
 
     return normal, missing
 
+
 if __name__ == "__main__":
     a, b, start_date, r, outage = linear_regression()
-    print("debug: a={}, b={}, start_date={}, r={}, outage={}".format(a, b, start_date, r, outage))
+    print("debug: a={}, b={}, start_date={}, r={}, outage={}".format(
+        a, b, start_date, r, outage))
     Y = COMBINATIONS
     X = (Y - b) / a + outage
     done_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=X)

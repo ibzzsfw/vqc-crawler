@@ -1,3 +1,10 @@
+# to run this script in the background, use the following command:
+# nohup python cron-vqc.py &
+# to kill the process, use the following command:
+# ps -ef | grep cron-vqc.py # pid is the second column
+# kill -9 <PID>
+# where <PID> is the process ID of cron-vqc.py
+
 from datetime import datetime, timedelta
 import sched
 import time
@@ -20,7 +27,8 @@ def main():
     done_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=X)
     done = len(list_pkl()) - 2
     percent = '{:.4f}'.format(done / COMBINATIONS * 100)
-    message = message_tpl.format(status=status, count=done, percent=percent, a=a, b=b, r=r, done_date=done_date, X=X)
+    message = message_tpl.format(
+        status=status, count=done, percent=percent, a=a, b=b, r=r, done_date=done_date, X=X)
 
     line.send_all(message)
     return status == "Done"
@@ -36,10 +44,3 @@ if __name__ == "__main__":
     while not main():
         s.enter(60 * 60 * 6, 1, void, ())
         s.run()
-
-# to run this script in the background, use the following command:
-# nohup python cron-vqc.py &
-# to kill the process, use the following command:
-# ps -ef | grep cron-vqc.py # pid is the second column
-# kill -9 <PID>
-# where <PID> is the process ID of cron-vqc.py
