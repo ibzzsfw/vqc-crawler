@@ -135,6 +135,8 @@ def etl_duration() -> list:
     # sort by date
     done = dict(sorted(done.items()))
 
+    print("debug: done={}".format(done))
+
     return done
 
 def csvrize(dict_from_etl: dict) -> str:
