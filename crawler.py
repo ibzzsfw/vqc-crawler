@@ -157,6 +157,7 @@ def extract_negative_count(dict_from_etl: dict) -> tuple:
 
 if __name__ == "__main__":
     a, b, start_date, r, outage = linear_regression()
+    print("debug: a={}, b={}, start_date={}, r={}, outage={}".format(a, b, start_date, r, outage))
     Y = COMBINATIONS
     X = (Y - b) / a + outage
     done_date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=X)
